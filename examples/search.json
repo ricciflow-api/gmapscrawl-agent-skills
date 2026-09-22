@@ -1,0 +1,12 @@
+{
+  "operation": "places.search",
+  "input": {
+    "q": "coffee shops in Seattle",
+    "page": 1,
+    "hl": "en",
+    "gl": "us",
+    "extra": false
+  },
+  "client_request_id": "gmaps-example-search-20260922",
+  "wait_seconds": 10
+}

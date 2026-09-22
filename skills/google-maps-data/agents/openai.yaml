@@ -1,0 +1,4 @@
+interface:
+  display_name: "Google Maps Data"
+  short_description: "Retrieve public Google Maps place data safely"
+  default_prompt: "Use $google-maps-data to retrieve the requested public Google Maps place data without expanding its scope."

@@ -1,0 +1,7 @@
+{
+  "operation": "jobs.results",
+  "input": {
+    "job_id": "job_01K4GMAPSEXAMPLE0000000000",
+    "limit": 25
+  }
+}
