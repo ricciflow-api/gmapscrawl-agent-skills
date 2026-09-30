@@ -24,53 +24,21 @@ test("fallback builds a bounded authenticated create request without putting the
     operation: "places.search",
     input: { q: "coffee shops in Seattle", page: 1, hl: "en", gl: "us", extra: false },
     client_request_id: "gmaps-test-request-0001",
-    wait_seconds: 10,
   }, environment);
-  assert.equal(request.url.href, "https://gmapscrawl.com/api/v1/scrapes");
+  assert.equal(request.url.href, "https://gmapscrawl.com/api/v1/search");
   assert.equal(request.url.href.includes(testKey), false);
   assert.equal(request.init.headers.get("api-key"), testKey);
   assert.equal(request.init.headers.get("idempotency-key"), "gmaps-test-request-0001");
-  assert.equal(request.init.headers.get("prefer"), "wait=10");
-  assert.deepEqual(JSON.parse(request.init.body), {
-    operation: "places.search",
-    input: { q: "coffee shops in Seattle", page: 1, hl: "en", gl: "us", extra: false },
-  });
+  assert.equal(request.init.headers.get("prefer"), null);
+  assert.deepEqual(JSON.parse(request.init.body), { q: "coffee shops in Seattle", page: 1, hl: "en", gl: "us", extra: false });
   assert.equal(request.init.redirect, "error");
 });
 
-test("fallback maps canonical read, export, and cancellation routes exactly", async () => {
-  const results = await buildRequest({
-    operation: "jobs.results",
-    input: { job_id: "scr_12345678", cursor: "opaque-cursor", limit: 50 },
-  }, environment);
-  assert.equal(
-    results.url.href,
-    "https://gmapscrawl.com/api/v1/scrapes/scr_12345678/results?cursor=opaque-cursor&limit=50",
-  );
-  assert.equal(results.init.method, "GET");
-  assert.equal(results.init.body, undefined);
-
-  const exported = await buildRequest({
-    operation: "exports.create",
-    input: { job_id: "scr_12345678", format: "ndjson" },
-    client_request_id: "gmaps-test-export-0001",
-  }, environment);
-  assert.equal(
-    exported.url.href,
-    "https://gmapscrawl.com/api/v1/scrapes/scr_12345678/exports",
-  );
-  assert.deepEqual(JSON.parse(exported.init.body), { format: "ndjson" });
-
-  const canceled = await buildRequest({
-    operation: "jobs.cancel",
-    input: { job_id: "scr_12345678" },
-    client_request_id: "gmaps-test-cancel-0001",
-  }, environment);
-  assert.equal(
-    canceled.url.href,
-    "https://gmapscrawl.com/api/v1/scrapes/scr_12345678/cancel",
-  );
-  assert.equal(canceled.init.body, undefined);
+test("fallback rejects retired operations and asynchronous options before network access", async () => {
+  for (const operation of ["jobs.results", "exports.create", "jobs.cancel", "place.reviews", "place.photos"]) {
+    await assert.rejects(buildRequest({ operation, input: {}, client_request_id: "gmaps-test-request-0001" }, environment), error => error.code === "unsupported_operation");
+  }
+  await assert.rejects(buildRequest({ operation: "places.search", input: { q: "fixture" }, client_request_id: "gmaps-test-request-0001", wait_seconds: 10 }, environment), error => error.code === "invalid_wait");
 });
 
 test("fallback emits a machine-readable fixture response and redacts a reflected key", async () => {
@@ -119,8 +87,8 @@ test("fallback rejects unsafe or ambiguous requests before network access", asyn
   );
   await assert.rejects(
     executeRequest({
-      operation: "place.reviews",
-      input: { fid: "fixture", page: 1, unexpected: true },
+      operation: "places.search",
+      input: { q: "fixture", page: 1, unexpected: true },
       client_request_id: "gmaps-test-request-0003",
     }, environment, fetcher),
     (error) => error.code === "invalid_document",
@@ -135,8 +103,9 @@ test("fallback rejects unsafe or ambiguous requests before network access", asyn
 test("fallback enforces the one MiB response ceiling", async () => {
   await assert.rejects(
     executeRequest({
-      operation: "jobs.get",
-      input: { job_id: "scr_12345678" },
+      operation: "places.search",
+      input: { q: "fixture" },
+      client_request_id: "gmaps-test-request-0009",
     }, environment, async () => new Response("{}", {
       status: 200,
       headers: {

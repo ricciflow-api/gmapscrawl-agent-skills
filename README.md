@@ -1,40 +1,17 @@
-# G Maps Crawl agent skills
+# G Maps Crawl agent skill
 
-Installable `google-maps-data` skill for public Google Maps business research through the hosted MCP server, with a dependency-free Node.js REST fallback. Inspired by the Glade agent-skills package structure.
-
-## Install
-
-```bash
-npx skills add ricciflow-api/gmapscrawl-agent-skills
-```
-
-Or copy `skills/google-maps-data` into your agent client's supported skills directory. The entry point is `skills/google-maps-data/SKILL.md`.
-
-## Configure
-
-Connect [G Maps Crawl MCP](https://github.com/ricciflow-api/gmapscrawl-mcp) at `https://gmapscrawl.com/api/mcp`. For the REST fallback, supply `GMSCRAPER_API_KEY` using your secret environment, then run:
+Install `skills/google-maps-data` in your agent’s skill directory. Connect
+`https://gmapscrawl.com/api/mcp` or inject `GMSCRAPER_API_KEY` for the REST helper.
+The skill uses one synchronous search tool and returns up to 20 businesses per
+request. It includes pagination (pages 1–10), safe retries, and untrusted-data
+handling. No job polling, exports, or webhooks are needed.
 
 ```bash
 node skills/google-maps-data/scripts/gmapscraper-request.mjs examples/search.json
-```
-
-Generate a new `client_request_id` for a new search; preserve it with unchanged inputs on a retry. The helper performs one bounded request and prints JSON. Follow accepted jobs with `jobs.get`, then `jobs.results`.
-
-Start with a test key: results are simulated and consume zero units. The published service skill currently labels paid API/MCP new-work unavailable. Never infer live capability from the operation catalog. See [availability](https://docs.gmapscrawl.com/concepts/availability).
-
-## Included
-
-- `SKILL.md`: MCP-first workflow, bounded scope, job completion, and error handling.
-- `references/`: public operation schemas and normalized result semantics.
-- `scripts/gmapscraper-request.mjs`: rejects redirects, limits response size and duration, validates inputs, and keeps keys in headers.
-- `tests/`: offline request construction, rejection, output redaction, and response limits.
-
-## Validate
-
-```bash
 npm test
 ```
 
-Requires Node.js 22 or newer. No package installation is needed for the tests or helper.
-
-[Documentation](https://docs.gmapscrawl.com) · [MCP](https://github.com/ricciflow-api/gmapscrawl-mcp) · [MIT license](LICENSE)
+The request helper sends POST `/api/v1/search`. One accepted live search page
+uses one request unit; test-key responses are simulated and non-billable.
+See [the skill](skills/google-maps-data/SKILL.md) and
+[the docs](https://docs.gmapscrawl.com/quickstart).

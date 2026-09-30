@@ -6,7 +6,7 @@ import { resolve } from "node:path";
 
 const MAX_DOCUMENT_BYTES = 64 * 1024;
 const MAX_RESPONSE_BYTES = 1024 * 1024;
-const DEFAULT_TIMEOUT_MS = 30_000;
+const DEFAULT_TIMEOUT_MS = 180_000;
 const CONTRACT_URL = new URL("../references/operations.json", import.meta.url);
 
 class RequestError extends Error {
@@ -68,7 +68,7 @@ function configuration(environment, canonicalBaseUrl) {
       environment.GMSCRAPER_TIMEOUT_MS,
       DEFAULT_TIMEOUT_MS,
       1_000,
-      60_000,
+      180_000,
       "GMSCRAPER_TIMEOUT_MS",
     ),
     maximumResponseBytes: integerSetting(

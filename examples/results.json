@@ -1,7 +1,13 @@
 {
-  "operation": "jobs.results",
-  "input": {
-    "job_id": "job_01K4GMAPSEXAMPLE0000000000",
-    "limit": 25
+  "data": {
+    "total": 0,
+    "params": {
+      "q": "example",
+      "page": 1,
+      "hl": "en",
+      "extra": false
+    },
+    "businesses": [],
+    "simulated": true
   }
 }
