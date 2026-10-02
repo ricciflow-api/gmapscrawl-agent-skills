@@ -28,6 +28,12 @@ Return at most 20 businesses; fetch only the pages and locations needed for
 the user’s task. Stop after an empty page. `extra` defaults to false; enabling
 it requests available email/social enrichment and can take longer.
 
+Complete Maps details may be reused across queries
+for up to 730 days to prioritize speed. Query results normally remain cached for
+24 hours (one hour for empty results), and website contacts have a separate
+seven-day freshness budget. Preserve `place.observedAt`, `contactsCheckedAt`,
+and each contact's `observedAt`; reuse does not make an older observation new.
+
 Check MCP `isError` and REST HTTP status. Honor retry guidance and the user's
 deadline; reuse the same request identifier and identical input after a timeout
 or retryable transport error. A timeout may leave accepted work running.

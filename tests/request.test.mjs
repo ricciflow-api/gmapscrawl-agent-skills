@@ -128,3 +128,11 @@ test("skill package contains no credential-shaped example and routes MCP first",
   assert.doesNotMatch(`${instructions}\n${metadata}\n${operations}`, /gms_(?:live|test)_[A-Za-z0-9_-]{6,24}_[A-Za-z0-9_-]{32,128}/);
   assert.match(metadata, /\$google-maps-data/);
 });
+
+test("packaged skill files match the canonical publication manifest", async () => {
+  const manifest = JSON.parse(await readFile(new URL("manifest.json", skill), "utf8"));
+  for (const [path, expected] of Object.entries(manifest.files)) {
+    assert.equal(sha256(await readFile(new URL(path, skill))), expected, path);
+  }
+  assert.equal(manifest.checksum_algorithm, "sha256");
+});

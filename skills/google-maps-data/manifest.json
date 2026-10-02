@@ -1,0 +1,28 @@
+{
+  "skill": "google-maps-data",
+  "version": "2026-09-22",
+  "schema_version": "2026-09-22",
+  "api_version": "2.0.0",
+  "checksum_algorithm": "sha256",
+  "package_sha256": "0ef4c527f16507cb1eb0dd951a7274ae2ae90e2ced54b3b6fb6789cd659d489c",
+  "canonical": {
+    "registry_source": "lib/gmaps/api/search-contract.ts",
+    "registry_source_sha256": "3a9c991a1e71d7f62c758ba1f881062787b94a30da0fd4ccef32411e458cbd1d",
+    "openapi_source": "lib/gmaps/api/openapi.ts",
+    "openapi_source_sha256": "3726fd79c8f0c3bd345f864f3d8339b236b754df804f97f2a832e87e93cfa7f4",
+    "openapi_document_sha256": "b9de90ffb2dca4da9bf1ef19f508cb9cf4d7ce7a28edb44555eeb5b139bc4ad8",
+    "schema_source": "../../packages/job-engine/src/lib/gmaps/domain/schemas.ts",
+    "schema_source_sha256": "81ce549647c7385a44263413f8109d9244bb383537808bef26a7ca4a4698bb4d",
+    "openapi_url": "https://gmapscrawl.com/api/v1/openapi.json",
+    "mcp_url": "https://gmapscrawl.com/api/mcp"
+  },
+  "files": {
+    "SKILL.md": "7bc04d99ffa47eb5232b78bb989e242c56d09ad729ceb3e67f66af3e99195d79",
+    "agents/openai.yaml": "aa223c59071c1b96af4ee6ef7465bfdeeea95062c9f7a77ee4288ca2d23dc617",
+    "references/operations.json": "95b9b38cc21cb267d52b3ef59dec840a865ffd3d1762ae747517ac0706cde724",
+    "references/operations.md": "ca3a8ff0da4d0e0ad636502608493d3157861c829affb9c51301bbb4408ae6d6",
+    "references/result-schema.md": "0885b01d4e15b757e218a6ef7682299491e0746cf8fcb25bfcde42e65b8e59c8",
+    "scripts/gmapscraper-request.mjs": "d82a36d11faf51c54c04e0bcdb32d1dee22f7a0d418eaba9ab934332dde99d0c",
+    "scripts/install.mjs": "da295e5de0ff6dd210871bad324392fd239249e23b49e500262128ecc27c7ca7"
+  }
+}
