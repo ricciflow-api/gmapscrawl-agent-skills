@@ -6,6 +6,11 @@ The skill uses one synchronous search tool and returns up to 20 businesses per
 request. It includes pagination (pages 1–10), safe retries, and untrusted-data
 handling. No job polling, exports, or webhooks are needed.
 
+G Maps Crawl REST API and MCP are officially released. MCP is available on free
+and paid API plans and shares the REST API allowance. Online and Extension have
+separate allowances and plan limits. Live requests remain subject to credential
+permissions, source availability, server capacity, and API plan limits.
+
 ```bash
 node skills/google-maps-data/scripts/gmapscraper-request.mjs examples/search.json
 npm test
